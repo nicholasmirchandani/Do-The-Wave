@@ -1,5 +1,4 @@
 #version 450 core
-#define NUM_WAVES 2000
 #define SCREEN_X 1920
 #define SCREEN_Y 1080
 
