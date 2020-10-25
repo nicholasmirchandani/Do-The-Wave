@@ -15,7 +15,7 @@ GLuint CreateShader(GLenum shadertype, std::string filename);
 int main() {
 	//GLFW/GLEW Initialization
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(1920, 1080, "Do The Wave", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(640, 480, "Do The Wave", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1);
 	glewInit();
@@ -66,7 +66,10 @@ int main() {
 	int sinSpeedLocation = glGetUniformLocation(program, "sinSpeed");
 	int blueLocLocation = glGetUniformLocation(program, "blueLoc");
 	int numWavesLocation = glGetUniformLocation(program, "numWaves");
+	int screenXLocation = glGetUniformLocation(program, "screenX");
+	int screenYLocation = glGetUniformLocation(program, "screenY");
 
+	int screenX, screenY;
 	float sinSpeed = 1.0;
 	float step = 0.01f;
 	float blue = 0.0f;
@@ -78,10 +81,15 @@ int main() {
 	while (!glfwWindowShouldClose(window)) {
 		static const float black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		glClearBufferfv(GL_COLOR, 0, black);
+		glfwGetWindowSize(window, &screenX, &screenY);
 
 		glUniform1f(sinSpeedLocation, sinSpeed);
 		glUniform1f(blueLocLocation, blue);
 		glUniform1f(numWavesLocation, numWaves);
+		glUniform1i(screenXLocation, screenX);
+		glUniform1i(screenYLocation, screenY);
+		glViewport(0, 0, screenX, screenY);
+
 		glDrawElements(GL_TRIANGLES, numElements, GL_UNSIGNED_INT, nullptr);
 
 		if (blue < 0.0f) {
